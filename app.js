@@ -518,102 +518,142 @@ const App = {
   },
 
   init() {
+    // 1. Immediately load default dataset: 50 Startups
+    try {
+      this.loadPresetProblem('startups');
+    } catch (err) {
+      console.error('Failed to load preset problem on init:', err);
+    }
+    // 2. Bind event listeners
     this.bindEvents();
-    // Load default dataset: 50 Startups
-    this.loadPresetProblem('startups');
-    // Render Lucide icons
+    // 3. Render Lucide icons
     if (window.lucide) {
       window.lucide.createIcons();
     }
   },
 
   bindEvents() {
-    // Problem selector dropdown (+1 bonus point)
+    // Problem selector dropdown
     const problemSelector = document.getElementById('problemSelector');
-    problemSelector.addEventListener('change', (e) => {
-      const val = e.target.value;
-      if (val === 'startups' || val === 'boston') {
-        this.loadPresetProblem(val);
-      } else if (val === 'custom') {
-        // Highlight dataset URL toolbar
-        document.getElementById('datasetUrlInput').focus();
-      }
-    });
+    if (problemSelector) {
+      problemSelector.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val === 'startups' || val === 'boston') {
+          this.loadPresetProblem(val);
+        } else if (val === 'custom') {
+          const urlInput = document.getElementById('datasetUrlInput');
+          if (urlInput) urlInput.focus();
+        }
+      });
+    }
 
     // Preset buttons
-    document.getElementById('btnPresetStartups').addEventListener('click', () => {
-      problemSelector.value = 'startups';
-      this.loadPresetProblem('startups');
-    });
+    const btnStartups = document.getElementById('btnPresetStartups');
+    if (btnStartups) {
+      btnStartups.addEventListener('click', () => {
+        if (problemSelector) problemSelector.value = 'startups';
+        this.loadPresetProblem('startups');
+      });
+    }
 
-    document.getElementById('btnPresetBoston').addEventListener('click', () => {
-      problemSelector.value = 'boston';
-      this.loadPresetProblem('boston');
-    });
+    const btnBoston = document.getElementById('btnPresetBoston');
+    if (btnBoston) {
+      btnBoston.addEventListener('click', () => {
+        if (problemSelector) problemSelector.value = 'boston';
+        this.loadPresetProblem('boston');
+      });
+    }
 
-    // Load from URL button (+2 bonus points)
-    document.getElementById('btnLoadUrl').addEventListener('click', () => {
-      this.loadDatasetFromUrl();
-    });
+    // Load from URL button
+    const btnLoadUrl = document.getElementById('btnLoadUrl');
+    if (btnLoadUrl) {
+      btnLoadUrl.addEventListener('click', () => {
+        this.loadDatasetFromUrl();
+      });
+    }
 
     // Local file upload
-    document.getElementById('fileUploadInput').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        this.loadDatasetFromFile(file);
-      }
-    });
+    const fileUploadInput = document.getElementById('fileUploadInput');
+    if (fileUploadInput) {
+      fileUploadInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          this.loadDatasetFromFile(file);
+        }
+      });
+    }
 
     // Train/Test Split Slider
     const splitSlider = document.getElementById('trainSplitSlider');
     const splitLabel = document.getElementById('trainSplitLabel');
-    splitSlider.addEventListener('input', (e) => {
-      const val = e.target.value;
-      splitLabel.textContent = `${val}% Train / ${100 - val}% Test`;
-      this.trainAndRender();
-    });
+    if (splitSlider) {
+      splitSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (splitLabel) splitLabel.textContent = `${val}% Train / ${100 - val}% Test`;
+        this.trainAndRender();
+      });
+    }
 
     // Reshuffle button
-    document.getElementById('btnReshuffle').addEventListener('click', () => {
-      this.splitSeed = Math.floor(Math.random() * 100000);
-      this.trainAndRender();
-    });
+    const btnReshuffle = document.getElementById('btnReshuffle');
+    if (btnReshuffle) {
+      btnReshuffle.addEventListener('click', () => {
+        this.splitSeed = Math.floor(Math.random() * 100000);
+        this.trainAndRender();
+      });
+    }
 
     // Target Column select change
-    document.getElementById('targetColSelect').addEventListener('change', (e) => {
-      this.datasetMgr.targetCol = e.target.value;
-      this.datasetMgr.featureCols = this.datasetMgr.columns.filter(c => c !== this.datasetMgr.targetCol);
-      this.datasetMgr.activeFeatures = [...this.datasetMgr.featureCols];
-      this.renderFeatureChips();
-      this.trainAndRender();
-    });
+    const targetColSelect = document.getElementById('targetColSelect');
+    if (targetColSelect) {
+      targetColSelect.addEventListener('change', (e) => {
+        this.datasetMgr.targetCol = e.target.value;
+        this.datasetMgr.featureCols = this.datasetMgr.columns.filter(c => c !== this.datasetMgr.targetCol);
+        this.datasetMgr.activeFeatures = [...this.datasetMgr.featureCols];
+        this.renderFeatureChips();
+        this.trainAndRender();
+      });
+    }
 
     // Feature selection quick buttons
-    document.getElementById('btnSelectAllFeatures').addEventListener('click', () => {
-      this.datasetMgr.activeFeatures = [...this.datasetMgr.featureCols];
-      this.renderFeatureChips();
-      this.trainAndRender();
-    });
+    const btnSelectAll = document.getElementById('btnSelectAllFeatures');
+    if (btnSelectAll) {
+      btnSelectAll.addEventListener('click', () => {
+        this.datasetMgr.activeFeatures = [...this.datasetMgr.featureCols];
+        this.renderFeatureChips();
+        this.trainAndRender();
+      });
+    }
 
-    document.getElementById('btnResetFeatures').addEventListener('click', () => {
-      // Keep only first feature if any
-      this.datasetMgr.activeFeatures = this.datasetMgr.featureCols.slice(0, 1);
-      this.renderFeatureChips();
-      this.trainAndRender();
-    });
+    const btnResetFeat = document.getElementById('btnResetFeatures');
+    if (btnResetFeat) {
+      btnResetFeat.addEventListener('click', () => {
+        this.datasetMgr.activeFeatures = this.datasetMgr.featureCols.slice(0, 1);
+        this.renderFeatureChips();
+        this.trainAndRender();
+      });
+    }
 
     // Copy Equation button
-    document.getElementById('btnCopyEquation').addEventListener('click', () => {
-      const eqText = document.getElementById('equationDisplay').innerText;
-      navigator.clipboard.writeText(eqText).then(() => {
-        alert('多元線性迴歸方程式已成功複製至剪貼簿！');
+    const btnCopyEq = document.getElementById('btnCopyEquation');
+    if (btnCopyEq) {
+      btnCopyEq.addEventListener('click', () => {
+        const eqEl = document.getElementById('equationDisplay');
+        if (eqEl) {
+          navigator.clipboard.writeText(eqEl.innerText).then(() => {
+            alert('多元線性迴歸方程式已成功複製至剪貼簿！');
+          });
+        }
       });
-    });
+    }
 
     // Reset Live Predictor to mean
-    document.getElementById('btnResetPredictor').addEventListener('click', () => {
-      this.resetPredictorInputs();
-    });
+    const btnResetPred = document.getElementById('btnResetPredictor');
+    if (btnResetPred) {
+      btnResetPred.addEventListener('click', () => {
+        this.resetPredictorInputs();
+      });
+    }
 
     // Chart tab switches
     document.querySelectorAll('.chart-tab').forEach(tab => {
@@ -624,45 +664,58 @@ const App = {
         btn.classList.add('active');
         const chartType = btn.dataset.chart;
         if (chartType === 'stepwise') {
-          document.getElementById('chartViewStepwise').classList.add('active');
+          const view = document.getElementById('chartViewStepwise');
+          if (view) view.classList.add('active');
         } else if (chartType === 'scatter') {
-          document.getElementById('chartViewScatter').classList.add('active');
+          const view = document.getElementById('chartViewScatter');
+          if (view) view.classList.add('active');
           if (this.charts.scatter) this.charts.scatter.resize();
         } else if (chartType === 'residuals') {
-          document.getElementById('chartViewResiduals').classList.add('active');
+          const view = document.getElementById('chartViewResiduals');
+          if (view) view.classList.add('active');
           if (this.charts.residuals) this.charts.residuals.resize();
         }
       });
     });
 
     // Diagnostic table search & filter
-    document.getElementById('testTableSearch').addEventListener('input', () => {
-      this.renderTestSetTable();
-    });
-    document.getElementById('testTableFilter').addEventListener('change', () => {
-      this.renderTestSetTable();
-    });
+    const searchInput = document.getElementById('testTableSearch');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        this.renderTestSetTable();
+      });
+    }
+    const filterSelect = document.getElementById('testTableFilter');
+    if (filterSelect) {
+      filterSelect.addEventListener('change', () => {
+        this.renderTestSetTable();
+      });
+    }
 
-    // Modals
+    // Modals (safe guards)
     const deployModal = document.getElementById('deployModal');
-    document.getElementById('btnOpenDeployModal').addEventListener('click', () => {
-      deployModal.classList.add('open');
-    });
-    document.getElementById('btnCloseDeployModal').addEventListener('click', () => {
-      deployModal.classList.remove('open');
-    });
-    document.getElementById('btnModalClose').addEventListener('click', () => {
-      deployModal.classList.remove('open');
-    });
-    deployModal.addEventListener('click', (e) => {
-      if (e.target === deployModal) deployModal.classList.remove('open');
-    });
+    const btnOpenDeploy = document.getElementById('btnOpenDeployModal');
+    if (deployModal && btnOpenDeploy) {
+      btnOpenDeploy.addEventListener('click', () => {
+        deployModal.classList.add('open');
+      });
+      const btnClose1 = document.getElementById('btnCloseDeployModal');
+      if (btnClose1) btnClose1.addEventListener('click', () => deployModal.classList.remove('open'));
+      const btnClose2 = document.getElementById('btnModalClose');
+      if (btnClose2) btnClose2.addEventListener('click', () => deployModal.classList.remove('open'));
+      deployModal.addEventListener('click', (e) => {
+        if (e.target === deployModal) deployModal.classList.remove('open');
+      });
+    }
 
     // Docs scroll
-    document.getElementById('btnOpenDocs').addEventListener('click', () => {
-      const sec = document.getElementById('methodologySection');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth' });
-    });
+    const btnDocs = document.getElementById('btnOpenDocs');
+    if (btnDocs) {
+      btnDocs.addEventListener('click', () => {
+        const sec = document.getElementById('methodologySection');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
   },
 
   // Load predefined Kaggle dataset
