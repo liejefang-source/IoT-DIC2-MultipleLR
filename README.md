@@ -95,14 +95,14 @@ git commit -m "feat: complete DIC-2 multiple linear regression project"
 
 # 建立 main 分支並設定遠端儲存庫
 git branch -M main
-git remote add origin https://github.com/[您的GitHub帳號]/IoT-DIC2-MultipleLR.git
+git remote add origin https://github.com/liejefang-source/IoT-DIC2-MultipleLR.git
 
 # 推播至 GitHub
 git push -u origin main
 ```
 
 ### 步驟 2: 前往 GitHub 啟用 Pages
-1. 開啟您的 GitHub 專案頁面：`https://github.com/[您的GitHub帳號]/IoT-DIC2-MultipleLR`
+1. 開啟您的 GitHub 專案頁面：`https://github.com/liejefang-source/IoT-DIC2-MultipleLR`
 2. 點擊頂部 **Settings** &rarr; 左側側邊欄 **Pages**。
 3. **方式一 (官方推薦 · 速度最快)：**
    * 在 `Build and deployment` 的 `Source` 下拉選單中選擇 **GitHub Actions**。
@@ -114,7 +114,7 @@ git push -u origin main
 ### 步驟 3: 複製公開網址繳交至 iLearning 3.0
 * 部署完成後，公開網址格式如下：
   ```
-  https://[您的GitHub帳號].github.io/IoT-DIC2-MultipleLR/
+  https://liejefang-source.github.io/IoT-DIC2-MultipleLR/
   ```
 * 將此網址填入作業系統中即可獲得滿分與全部加分！
 
