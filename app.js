@@ -1247,14 +1247,16 @@ const App = {
         datasets: [{
           label: 'RMSE (均方根誤差)',
           data: rmseVals,
-          borderColor: '#06b6d4',
-          backgroundColor: 'rgba(6, 182, 212, 0.1)',
+          borderColor: '#00f0ff',
+          backgroundColor: 'rgba(0, 240, 255, 0.12)',
           fill: true,
-          tension: 0.35,
-          borderWidth: 2.5,
-          pointBackgroundColor: '#06b6d4',
-          pointRadius: 4,
-          pointHoverRadius: 6
+          tension: 0.3,
+          borderWidth: 2.8,
+          pointBackgroundColor: '#fcee0a',
+          pointBorderColor: '#000',
+          pointBorderWidth: 1.5,
+          pointRadius: 5,
+          pointHoverRadius: 8
         }]
       },
       options: {
@@ -1263,23 +1265,25 @@ const App = {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(18, 26, 44, 0.95)',
-            borderColor: 'rgba(6, 182, 212, 0.4)',
-            borderWidth: 1,
-            titleFont: { family: 'Plus Jakarta Sans', weight: 'bold' },
-            bodyFont: { family: 'JetBrains Mono' }
+            backgroundColor: '#050811',
+            borderColor: '#00f0ff',
+            borderWidth: 1.5,
+            titleFont: { family: 'Orbitron', weight: 'bold' },
+            bodyFont: { family: 'JetBrains Mono' },
+            titleColor: '#fcee0a',
+            bodyColor: '#00f0ff'
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Number of Features (k)', color: '#94a3b8', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'FEATURE_COUNT [k]', color: '#fcee0a', font: { family: 'Orbitron', size: 10 } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#00f0ff', font: { family: 'JetBrains Mono' } }
           },
           y: {
-            title: { display: true, text: 'RMSE', color: '#94a3b8', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'RMSE_VALUE', color: '#fcee0a', font: { family: 'Orbitron', size: 10 } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#00f0ff', font: { family: 'JetBrains Mono' } }
           }
         }
       }
@@ -1296,14 +1300,16 @@ const App = {
         datasets: [{
           label: 'Adjusted R²',
           data: adjR2Vals,
-          borderColor: '#818cf8',
-          backgroundColor: 'rgba(99, 102, 241, 0.12)',
+          borderColor: '#ff0055',
+          backgroundColor: 'rgba(255, 0, 85, 0.15)',
           fill: true,
-          tension: 0.35,
-          borderWidth: 2.5,
-          pointBackgroundColor: '#818cf8',
-          pointRadius: 4,
-          pointHoverRadius: 6
+          tension: 0.3,
+          borderWidth: 2.8,
+          pointBackgroundColor: '#00f0ff',
+          pointBorderColor: '#000',
+          pointBorderWidth: 1.5,
+          pointRadius: 5,
+          pointHoverRadius: 8
         }]
       },
       options: {
@@ -1312,23 +1318,25 @@ const App = {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(18, 26, 44, 0.95)',
-            borderColor: 'rgba(99, 102, 241, 0.4)',
-            borderWidth: 1,
-            titleFont: { family: 'Plus Jakarta Sans', weight: 'bold' },
-            bodyFont: { family: 'JetBrains Mono' }
+            backgroundColor: '#050811',
+            borderColor: '#ff0055',
+            borderWidth: 1.5,
+            titleFont: { family: 'Orbitron', weight: 'bold' },
+            bodyFont: { family: 'JetBrains Mono' },
+            titleColor: '#00f0ff',
+            bodyColor: '#ff0055'
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Number of Features (k)', color: '#94a3b8', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'FEATURE_COUNT [k]', color: '#fcee0a', font: { family: 'Orbitron', size: 10 } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#ff0055', font: { family: 'JetBrains Mono' } }
           },
           y: {
-            title: { display: true, text: 'Adjusted R²', color: '#94a3b8', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'ADJ_R2_SCORE', color: '#fcee0a', font: { family: 'Orbitron', size: 10 } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#ff0055', font: { family: 'JetBrains Mono' } }
           }
         }
       }
@@ -1375,29 +1383,29 @@ const App = {
       data: {
         datasets: [
           {
-            label: '理想擬合線 (y = x)',
+            label: 'IDEAL_FIT // [y = x]',
             data: diagLine,
             type: 'line',
-            borderColor: 'rgba(255, 255, 255, 0.4)',
-            borderDash: [5, 5],
+            borderColor: '#fcee0a',
+            borderDash: [6, 4],
             pointRadius: 0,
-            borderWidth: 1.5,
+            borderWidth: 2,
             fill: false
           },
           {
-            label: '訓練集 (Train)',
+            label: 'TRAIN_SET',
             data: trainPoints,
-            backgroundColor: 'rgba(6, 182, 212, 0.7)',
-            borderColor: '#06b6d4',
+            backgroundColor: 'rgba(0, 240, 255, 0.75)',
+            borderColor: '#00f0ff',
             pointRadius: 4.5
           },
           {
-            label: '測試集 (Test)',
+            label: 'TEST_SET',
             data: testPoints,
-            backgroundColor: 'rgba(244, 63, 94, 0.85)',
-            borderColor: '#f43f5e',
+            backgroundColor: 'rgba(255, 0, 85, 0.9)',
+            borderColor: '#ff0055',
             pointRadius: 6,
-            pointHoverRadius: 8
+            pointHoverRadius: 9
           }
         ]
       },
@@ -1406,24 +1414,29 @@ const App = {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            labels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans' } }
+            labels: { color: '#00f0ff', font: { family: 'Orbitron', size: 11 } }
           },
           tooltip: {
+            backgroundColor: '#050811',
+            borderColor: '#00f0ff',
+            borderWidth: 1.5,
+            titleFont: { family: 'Orbitron' },
+            bodyFont: { family: 'JetBrains Mono' },
             callbacks: {
-              label: (context) => `真實: ${context.parsed.x.toFixed(2)}, 預測: ${context.parsed.y.toFixed(2)}`
+              label: (context) => `ACTUAL: ${context.parsed.x.toFixed(2)} | PREDICTED: ${context.parsed.y.toFixed(2)}`
             }
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Actual Value (真實值)', color: '#94a3b8' },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'ACTUAL_TARGET [Y]', color: '#fcee0a', font: { family: 'Orbitron' } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#00f0ff', font: { family: 'JetBrains Mono' } }
           },
           y: {
-            title: { display: true, text: 'Predicted Value (預測值)', color: '#94a3b8' },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'PREDICTED_TARGET [Ŷ]', color: '#fcee0a', font: { family: 'Orbitron' } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#00f0ff', font: { family: 'JetBrains Mono' } }
           }
         }
       }
@@ -1467,12 +1480,12 @@ const App = {
       data: {
         labels: binLabels,
         datasets: [{
-          label: '殘差分佈頻率 (Residual Frequency)',
+          label: 'RESIDUAL_DENSITY_FREQ',
           data: binCounts,
-          backgroundColor: 'rgba(245, 158, 11, 0.7)',
-          borderColor: '#f59e0b',
-          borderWidth: 1,
-          borderRadius: 4
+          backgroundColor: 'rgba(252, 238, 10, 0.75)',
+          borderColor: '#fcee0a',
+          borderWidth: 1.5,
+          borderRadius: 2
         }]
       },
       options: {
@@ -1481,21 +1494,26 @@ const App = {
         plugins: {
           legend: { display: false },
           tooltip: {
+            backgroundColor: '#050811',
+            borderColor: '#fcee0a',
+            borderWidth: 1.5,
+            titleFont: { family: 'Orbitron' },
+            bodyFont: { family: 'JetBrains Mono' },
             callbacks: {
-              label: (context) => `樣本頻率: ${context.parsed.y} 筆`
+              label: (context) => `FREQ: ${context.parsed.y} SAMPLES`
             }
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Residual Range (殘差值)', color: '#94a3b8' },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }
+            title: { display: true, text: 'RESIDUAL_DELTA', color: '#fcee0a', font: { family: 'Orbitron' } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#fcee0a', font: { family: 'JetBrains Mono', size: 10 } }
           },
           y: {
-            title: { display: true, text: 'Frequency (頻率)', color: '#94a3b8' },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+            title: { display: true, text: 'SAMPLE_COUNT', color: '#fcee0a', font: { family: 'Orbitron' } },
+            grid: { color: 'rgba(0, 240, 255, 0.1)' },
+            ticks: { color: '#00f0ff', font: { family: 'JetBrains Mono' } }
           }
         }
       }

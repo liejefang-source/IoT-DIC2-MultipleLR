@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IoT Multiple Linear Regression Studio | 智慧數據分析與即時預測平台</title>
-  <meta name="description" content="IoT Multiple Linear Regression Studio：企業級多元線性迴歸分析與即時預測平台，支援即時特徵工程、最小平方法模型診斷、邊緣端即時推論及自訂資料集匯入。">
+  <title>CYBER_ML // Multiple Linear Regression Studio</title>
+  <meta name="description" content="CYBER_ML Studio：賽博龐克高科技多元線性迴歸推論平台，邊緣端超低延遲預測矩陣與實時神經診斷系統。">
   
-  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <!-- Cyberpunk Fonts: Orbitron, Chakra Petch & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
   
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -20,44 +20,56 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- Background Glow Effects -->
-  <div class="ambient-glow glow-1"></div>
-  <div class="ambient-glow glow-2"></div>
+<body class="cyberpunk-theme">
+  <!-- Cyberpunk Grid Overlay & CRT Scanlines -->
+  <div class="cyber-grid-overlay"></div>
+  <div class="cyber-scanlines"></div>
+  
+  <!-- Neon Light Flares -->
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-pink"></div>
+  <div class="ambient-glow glow-yellow"></div>
 
-  <!-- Top Navigation Bar -->
-  <header class="app-header">
+  <!-- Top Cyber Navigation Bar -->
+  <header class="app-header cyber-header">
     <div class="header-left">
-      <div class="logo-badge">
-        <i data-lucide="cpu" class="logo-icon"></i>
+      <div class="logo-badge cyber-logo">
+        <div class="logo-icon-wrap">
+          <i data-lucide="terminal" class="logo-icon"></i>
+        </div>
         <div class="logo-text">
-          <h1>IoT Multiple Linear Regression Studio</h1>
-          <span class="sub-title">Enterprise Edge AI & Predictive Analytics Platform</span>
+          <div class="cyber-tagline">// SYS.VER.2077_AIoT</div>
+          <h1>CYBER_ML <span class="accent-highlight">STUDIO</span></h1>
+          <span class="sub-title">NEO-OLS // REAL-TIME PREDICTIVE ENGINE</span>
         </div>
       </div>
     </div>
 
-    <!-- Center: Problem Selector -->
+    <!-- Center: Cyber Problem Selector -->
     <div class="header-center">
-      <div class="problem-selector-wrapper">
-        <span class="selector-label"><i data-lucide="layers" class="mini-icon"></i> 分析場景 (Task):</span>
-        <select id="problemSelector" class="problem-dropdown" aria-label="切換預測場景">
-          <option value="startups" selected>🏢 商業創投與獲利預測模型 (50 Startups)</option>
-          <option value="boston">🏡 房地產市場價值估計模型 (Boston Housing)</option>
-          <option value="custom">🌐 自訂資料集分析 (Custom Dataset Engine)</option>
+      <div class="problem-selector-wrapper cyber-box">
+        <span class="selector-label"><i data-lucide="cpu" class="mini-icon"></i> [TASK_MODULE]:</span>
+        <select id="problemSelector" class="problem-dropdown cyber-select" aria-label="切換預測場景">
+          <option value="startups" selected>⚡ MODULE_01 // 商業創投獲利推論 (50 Startups)</option>
+          <option value="boston">🏙️ MODULE_02 // 房產神經市場估值 (Boston Housing)</option>
+          <option value="custom">🌐 MODULE_03 // 自訂外部數據串流 (Custom Stream)</option>
         </select>
       </div>
     </div>
 
     <!-- Right: Action Controls -->
     <div class="header-right">
-      <a href="https://github.com/liejefang-source/IoT-DIC2-MultipleLR" target="_blank" class="btn btn-outline" title="查看 GitHub 原始碼與部署說明">
+      <div class="cyber-status-chip">
+        <span class="pulse-dot"></span>
+        <span class="chip-text">CORE_ONLINE</span>
+      </div>
+      <a href="https://github.com/liejefang-source/IoT-DIC2-MultipleLR" target="_blank" class="btn btn-cyber-outline" title="GitHub Repository">
         <i data-lucide="github" class="icon-sm"></i>
-        <span>GitHub 儲存庫</span>
+        <span>GITHUB_SRC</span>
       </a>
-      <button id="btnOpenDocs" class="btn btn-primary" title="查看模型架構與數學方法論">
-        <i data-lucide="book-open" class="icon-sm"></i>
-        <span>模型架構與方法論</span>
+      <button id="btnOpenDocs" class="btn btn-cyber-primary" title="查看模型架構與數學方法論">
+        <i data-lucide="binary" class="icon-sm"></i>
+        <span>SYS_SPECS // 方法論</span>
       </button>
     </div>
   </header>
@@ -104,16 +116,16 @@
     <section class="card config-card" id="configSection">
       <div class="card-header">
         <div class="card-title-group">
-          <i data-lucide="sliders-horizontal" class="section-icon"></i>
+          <i data-lucide="sliders-horizontal" class="section-icon text-yellow"></i>
           <div>
-            <h2>Feature Selection & Preliminary Analysis</h2>
-            <p class="section-desc" id="datasetDescText">50 Startup Multiple Linear Regression Explorer / 即時特徵篩選與訓練設定</p>
+            <h2>FEATURE_MATRIX // PRELIMINARY ANALYSIS</h2>
+            <p class="section-desc" id="datasetDescText">NEO-OLS ENGINE // ACTIVE FEATURE REGRESSION & WEIGHT CALIBRATION</p>
           </div>
         </div>
         <div class="dataset-meta-tags" id="datasetMetaBadges">
-          <span class="meta-tag" id="badgeSampleCount"><i data-lucide="database" class="icon-xs"></i> 50 筆樣本</span>
-          <span class="meta-tag" id="badgeFeatureCount"><i data-lucide="columns" class="icon-xs"></i> 4 個預測變數</span>
-          <span class="meta-tag badge-target" id="badgeTargetCol"><i data-lucide="target" class="icon-xs"></i> 目標變數: Profit</span>
+          <span class="meta-tag" id="badgeSampleCount"><i data-lucide="database" class="icon-xs"></i> 50 SAMPLES</span>
+          <span class="meta-tag" id="badgeFeatureCount"><i data-lucide="columns" class="icon-xs"></i> 4 PREDICTORS</span>
+          <span class="meta-tag badge-target" id="badgeTargetCol"><i data-lucide="target" class="icon-xs"></i> TARGET: Profit</span>
         </div>
       </div>
 
@@ -121,30 +133,30 @@
         <!-- Target & Split Controls -->
         <div class="config-controls">
           <div class="control-item">
-            <label for="targetColSelect" class="control-label">目標變數 (Target Y):</label>
+            <label for="targetColSelect" class="control-label">[TARGET_VARIABLE_Y]:</label>
             <select id="targetColSelect" class="select-input"></select>
           </div>
 
           <div class="control-item">
             <div class="label-row">
-              <label for="trainSplitSlider" class="control-label">訓練/測試集切分 (Train/Test Split):</label>
+              <label for="trainSplitSlider" class="control-label">[TRAIN_TEST_RATIO]:</label>
               <span id="trainSplitLabel" class="slider-val">80% Train / 20% Test</span>
             </div>
             <input type="range" id="trainSplitSlider" min="50" max="95" step="5" value="80" class="range-slider">
           </div>
 
           <div class="control-item btn-row">
-            <button id="btnReshuffle" class="btn btn-sm btn-outline" title="重新洗牌切分訓練集與測試集">
-              <i data-lucide="shuffle" class="icon-xs"></i> 重新隨機切分
+            <button id="btnReshuffle" class="btn btn-sm btn-cyber-outline" title="隨機洗牌切分訓練集與測試集">
+              <i data-lucide="shuffle" class="icon-xs"></i> RESHUFFLE_SEED
             </button>
-            <button id="btnSelectAllFeatures" class="btn btn-sm btn-ghost">全選特徵</button>
-            <button id="btnResetFeatures" class="btn btn-sm btn-ghost">重置特徵</button>
+            <button id="btnSelectAllFeatures" class="btn btn-sm btn-ghost">SELECT_ALL</button>
+            <button id="btnResetFeatures" class="btn btn-sm btn-ghost">RESET_FEAT</button>
           </div>
         </div>
 
         <!-- Feature Toggle Chips -->
         <div class="feature-selection-box">
-          <label class="control-label">選取納入多元迴歸之特徵 (點擊即時重新擬合模型):</label>
+          <label class="control-label">[ACTIVE_PREDICTORS] 點擊特徵晶片即時重擬合多元矩陣:</label>
           <div id="featureChipsContainer" class="feature-chips-container">
             <!-- Dynamically populated -->
           </div>
@@ -152,67 +164,67 @@
       </div>
     </section>
 
-    <!-- Key Performance Metrics Row (KPI Cards) -->
+    <!-- Key Performance Metrics Row (Cyber KPI Cards) -->
     <section class="metrics-grid">
       <div class="metric-card card-glow-emerald">
         <div class="metric-header">
-          <span class="metric-title">R² 判定係數 (R-Squared)</span>
+          <span class="metric-title">[R²] COEFFICIENT_OF_DETERMINATION</span>
           <i data-lucide="check-circle-2" class="metric-icon text-emerald"></i>
         </div>
         <div class="metric-value-row">
           <span id="metricR2" class="metric-val text-emerald">0.9508</span>
         </div>
         <div class="metric-footer">
-          <span id="metricR2Desc" class="metric-badge badge-emerald">解釋能力極佳</span>
-          <span class="metric-sub">測試集: <strong id="metricTestR2">0.9324</strong></span>
+          <span id="metricR2Desc" class="metric-badge badge-emerald">HIGH_FIDELITY</span>
+          <span class="metric-sub">TEST_SET: <strong id="metricTestR2">0.9324</strong></span>
         </div>
       </div>
 
       <div class="metric-card card-glow-indigo">
         <div class="metric-header">
-          <span class="metric-title">調整後 R² (Adjusted R²)</span>
-          <i data-lucide="trending-up" class="metric-icon text-indigo"></i>
+          <span class="metric-title">[ADJ_R²] PENALIZED_METRIC</span>
+          <i data-lucide="trending-up" class="metric-icon text-cyan"></i>
         </div>
         <div class="metric-value-row">
-          <span id="metricAdjR2" class="metric-val text-indigo">0.9452</span>
+          <span id="metricAdjR2" class="metric-val text-cyan">0.9452</span>
         </div>
         <div class="metric-footer">
-          <span class="metric-desc">懲罰多餘特徵項</span>
-          <span class="metric-sub">自由度 df: <strong id="metricDf">44</strong></span>
+          <span class="metric-desc">DEG_OF_FREEDOM</span>
+          <span class="metric-sub">df: <strong id="metricDf">44</strong></span>
         </div>
       </div>
 
       <div class="metric-card card-glow-cyan">
         <div class="metric-header">
-          <span class="metric-title">均方根誤差 (RMSE)</span>
-          <i data-lucide="activity" class="metric-icon text-cyan"></i>
+          <span class="metric-title">[RMSE] ROOT_MEAN_SQ_ERR</span>
+          <i data-lucide="activity" class="metric-icon text-yellow"></i>
         </div>
         <div class="metric-value-row">
-          <span id="metricRMSE" class="metric-val text-cyan">$8,854.76</span>
+          <span id="metricRMSE" class="metric-val text-yellow">$8,854.76</span>
         </div>
         <div class="metric-footer">
-          <span class="metric-desc">預測值標準偏差</span>
-          <span class="metric-sub">測試集: <strong id="metricTestRMSE">$9,120.40</strong></span>
+          <span class="metric-desc">SIGNAL_DISPERSION</span>
+          <span class="metric-sub">TEST: <strong id="metricTestRMSE">$9,120.40</strong></span>
         </div>
       </div>
 
       <div class="metric-card card-glow-amber">
         <div class="metric-header">
-          <span class="metric-title">平均絕對誤差 (MAE)</span>
-          <i data-lucide="bar-chart-2" class="metric-icon text-amber"></i>
+          <span class="metric-title">[MAE] MEAN_ABSOLUTE_ERR</span>
+          <i data-lucide="bar-chart-2" class="metric-icon text-orange"></i>
         </div>
         <div class="metric-value-row">
-          <span id="metricMAE" class="metric-val text-amber">$6,471.45</span>
+          <span id="metricMAE" class="metric-val text-pink">$6,471.45</span>
         </div>
         <div class="metric-footer">
-          <span class="metric-desc">平均絕對偏離度</span>
-          <span class="metric-sub">目標平均: <strong id="metricMeanY">$112,012</strong></span>
+          <span class="metric-desc">ABS_DEVIATION</span>
+          <span class="metric-sub">MEAN_Y: <strong id="metricMeanY">$112,012</strong></span>
         </div>
       </div>
 
       <div class="metric-card card-glow-purple">
         <div class="metric-header">
-          <span class="metric-title">整體檢定 (F-Statistic)</span>
+          <span class="metric-title">[F_STAT] HYPOTHESIS_ANOVA</span>
           <i data-lucide="sparkles" class="metric-icon text-purple"></i>
         </div>
         <div class="metric-value-row">
@@ -220,7 +232,7 @@
         </div>
         <div class="metric-footer">
           <span id="metricPValBadge" class="metric-badge badge-purple">p &lt; 0.0001 (***)</span>
-          <span class="metric-sub">總體迴歸顯著</span>
+          <span class="metric-sub">REJECT_NULL_H0</span>
         </div>
       </div>
     </section>
@@ -229,17 +241,16 @@
     <section class="card equation-card">
       <div class="equation-header">
         <div class="eq-title">
-          <i data-lucide="binary" class="icon-sm text-cyan"></i>
-          <span>擬合多元線性迴歸方程式 (Fitted Model Equation)</span>
+          <i data-lucide="terminal" class="icon-sm text-yellow"></i>
+          <span>NEO-OLS FITTED MODEL EQUATION // MATHEMATICAL MATRIX</span>
         </div>
-        <button id="btnCopyEquation" class="btn btn-xs btn-outline">
-          <i data-lucide="copy" class="icon-xs"></i> 複製方程式
+        <button id="btnCopyEquation" class="btn btn-xs btn-cyber-outline">
+          <i data-lucide="copy" class="icon-xs"></i> COPY_FORMULA
         </button>
       </div>
       <div class="equation-body">
         <div id="equationDisplay" class="equation-text">
-          <!-- Dynamically generated equation -->
-          載入中...
+          INITIALIZING_MATRIX...
         </div>
       </div>
     </section>
@@ -248,21 +259,21 @@
     <section class="card charts-section">
       <div class="charts-section-header">
         <div class="card-title-group">
-          <i data-lucide="line-chart" class="section-icon"></i>
+          <i data-lucide="line-chart" class="section-icon text-cyan"></i>
           <div>
-            <h2>Model Diagnostic & Visual Analytics</h2>
-            <p class="section-desc">視覺化模型評估：特徵數量影響、散佈圖與殘差診斷分析</p>
+            <h2>NEO_DIAGNOSTICS // VISUAL TELEMETRY</h2>
+            <p class="section-desc">STEPWISE FEATURE DIMENSIONALITY, DISPERSION SCATTER & RESIDUAL DISTRIBUTIONS</p>
           </div>
         </div>
         <div class="chart-tab-group">
           <button class="chart-tab active" data-chart="stepwise">
-            <i data-lucide="git-commit" class="icon-xs"></i> 維度影響曲線 (Stepwise Curves)
+            <i data-lucide="git-commit" class="icon-xs"></i> STEPWISE_CURVES [k]
           </button>
           <button class="chart-tab" data-chart="scatter">
-            <i data-lucide="scatter-chart" class="icon-xs"></i> 實際值 vs. 預測值散佈圖
+            <i data-lucide="scatter-chart" class="icon-xs"></i> SCATTER_PLOT [Y vs Ŷ]
           </button>
           <button class="chart-tab" data-chart="residuals">
-            <i data-lucide="bell" class="icon-xs"></i> 殘差分佈檢驗 (Normality)
+            <i data-lucide="bell" class="icon-xs"></i> RESIDUAL_NORMALITY
           </button>
         </div>
       </div>
@@ -327,24 +338,24 @@
           <div class="card-title-group">
             <i data-lucide="table" class="section-icon"></i>
             <div>
-              <h2>Model Coefficients & Statistical Tests</h2>
-              <p class="section-desc">最小平方法 (OLS) 估計係數、標準誤、t 檢定與 p-value 顯著性</p>
+              <h2>COEFFICIENT_WEIGHTS & T-STATISTICS</h2>
+              <p class="section-desc">OLS 估計係數矩陣、標準誤、雙尾 t 檢定與 p-value 顯著性</p>
             </div>
           </div>
-          <span class="stat-legend">顯著性: *** p&lt;0.001 | ** p&lt;0.01 | * p&lt;0.05</span>
+          <span class="stat-legend">// SIGNIFICANCE: *** p&lt;0.001 | ** p&lt;0.01 | * p&lt;0.05</span>
         </div>
 
         <div class="table-responsive">
           <table class="data-table" id="coefficientsTable">
             <thead>
               <tr>
-                <th>PREDICTOR (變數)</th>
-                <th>ESTIMATE (β)</th>
-                <th>STD. ERROR</th>
-                <th>T-STAT</th>
-                <th>P-VALUE</th>
-                <th>SIGNIF</th>
-                <th>95% CONF. INT</th>
+                <th>[PREDICTOR_SIGNAL]</th>
+                <th>[BETA_ESTIMATE]</th>
+                <th>[STD_ERROR]</th>
+                <th>[T_STAT]</th>
+                <th>[P_VALUE]</th>
+                <th>[SIGNIF]</th>
+                <th>[95%_CONF_INT]</th>
               </tr>
             </thead>
             <tbody id="coefficientsTableBody">
@@ -358,14 +369,14 @@
       <section class="card predictor-card">
         <div class="card-header">
           <div class="card-title-group">
-            <i data-lucide="calculator" class="section-icon text-cyan"></i>
+            <i data-lucide="zap" class="section-icon text-yellow"></i>
             <div>
-              <h2>Live Real-Time Predictor</h2>
-              <p class="section-desc">滑動或輸入各項特徵值，即時推論目標預測輸出</p>
+              <h2>REAL-TIME INFERENCE HUD</h2>
+              <p class="section-desc">調整輸入特徵信號，邊緣端超低延遲即時矩陣推論</p>
             </div>
           </div>
-          <button id="btnResetPredictor" class="btn btn-xs btn-outline">
-            <i data-lucide="rotate-ccw" class="icon-xs"></i> 恢復平均值
+          <button id="btnResetPredictor" class="btn btn-xs btn-cyber-outline">
+            <i data-lucide="rotate-ccw" class="icon-xs"></i> RESET_MEAN
           </button>
         </div>
 
@@ -373,7 +384,7 @@
         <div class="prediction-display-box">
           <span class="prediction-label" id="predictorTargetName">PREDICTED STARTUP PROFIT</span>
           <div class="prediction-value" id="predictorOutputValue">$130,094.66</div>
-          <div class="prediction-sub-info" id="predictorConfidenceRange">95% 預測區間: $118,520 ~ $141,668</div>
+          <div class="prediction-sub-info" id="predictorConfidenceRange">95% PREDICTION INTERVAL: $118,520 ~ $141,668</div>
         </div>
 
         <!-- Sliders & Inputs Container -->
@@ -388,22 +399,22 @@
     <section class="card diagnostic-card">
       <div class="card-header diagnostic-header">
         <div class="card-title-group">
-          <i data-lucide="shield-alert" class="section-icon text-amber"></i>
+          <i data-lucide="shield-alert" class="section-icon text-pink"></i>
           <div>
-            <h2>Test Set Analysis & Outliers Diagnostic</h2>
-            <p class="section-desc">獨立驗證測試集表現、預測誤差與殘差異常值標記 (|殘差| &gt; 2*RMSE)</p>
+            <h2>VALIDATION_TELEMETRY // ANOMALY DETECTOR</h2>
+            <p class="section-desc">獨立驗證測試集表現、預測殘差偏差與異常值標記 (|RESIDUAL| &gt; 2*RMSE)</p>
           </div>
         </div>
         <div class="table-filters">
           <div class="search-box">
             <i data-lucide="search" class="icon-xs"></i>
-            <input type="text" id="testTableSearch" placeholder="搜尋測試樣本 ID 或值...">
+            <input type="text" id="testTableSearch" placeholder="SEARCH_SAMPLE_ID...">
           </div>
           <select id="testTableFilter" class="select-input select-sm">
-            <option value="all">所有測試樣本</option>
-            <option value="normal">正常 (Normal)</option>
-            <option value="high">偏高誤差 (&gt;1σ)</option>
-            <option value="outlier">異常值 Outlier (&gt;2σ)</option>
+            <option value="all">ALL_TEST_SAMPLES</option>
+            <option value="normal">NORMAL (Within 1σ)</option>
+            <option value="high">ELEVATED (>1σ)</option>
+            <option value="outlier">ANOMALY_OUTLIER (>2σ)</option>
           </select>
         </div>
       </div>
@@ -413,10 +424,10 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>ACTUAL (真實值)</th>
-              <th>PREDICTED (預測值)</th>
-              <th>RESIDUAL (殘差)</th>
-              <th>ERROR (%)</th>
+              <th>ACTUAL [Y]</th>
+              <th>PREDICTED [Ŷ]</th>
+              <th>RESIDUAL [Δ]</th>
+              <th>ERROR_RATE</th>
               <th>DIAGNOSTIC STATUS</th>
             </tr>
           </thead>
