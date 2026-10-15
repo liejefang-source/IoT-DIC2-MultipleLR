@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIC-2 Kaggle 50 Startups & Boston Housing | 物聯網多元線性迴歸分析平台</title>
+  <meta name="description" content="物聯網數據分析與應用作業 DIC-2：50 Startups 與 Boston Housing 多元線性迴歸 (Multiple Linear Regression) 探索器，支援即時特徵篩選、模型診斷、即時預測及自訂資料集輸入。">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- PapaParse CDN for CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Glow Effects -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <i data-lucide="cpu" class="logo-icon"></i>
+        <div class="logo-text">
+          <h1>IoT Multiple Linear Regression Studio</h1>
+          <span class="sub-title">物聯網數據分析與應用 · DIC-2 作業平台</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center: Problem Selector (+1 bonus point) -->
+    <div class="header-center">
+      <div class="problem-selector-wrapper">
+        <span class="selector-label"><i data-lucide="layers" class="mini-icon"></i> 選擇問題 (<span class="badge-bonus">+1分</span>):</span>
+        <select id="problemSelector" class="problem-dropdown" aria-label="切換問題分析">
+          <option value="startups" selected>🏢 50 Startups 獲利預測 (Kaggle)</option>
+          <option value="boston">🏡 Boston Housing 房價中位數預測 (Kaggle)</option>
+          <option value="custom">🌐 自訂資料集 (Custom Dataset)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Right: Bonus & Action Controls -->
+    <div class="header-right">
+      <button id="btnOpenDeployModal" class="btn btn-outline" title="查看 GitHub Pages 部署指引">
+        <i data-lucide="github" class="icon-sm"></i>
+        <span>GitHub Pages 啟用說明</span>
+      </button>
+      <button id="btnOpenDocs" class="btn btn-primary" title="查看實驗原理與作業評分對照">
+        <i data-lucide="book-open" class="icon-sm"></i>
+        <span>方法論與作業說明</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sub-Header: Custom Dataset Input Bar (+2 bonus points) -->
+  <section class="dataset-toolbar">
+    <div class="toolbar-section url-input-group">
+      <label for="datasetUrlInput" class="input-label">
+        <i data-lucide="link" class="mini-icon"></i> 自訂資料集 URL (<span class="badge-bonus">+2分</span>):
+      </label>
+      <div class="input-with-button">
+        <input 
+          type="text" 
+          id="datasetUrlInput" 
+          class="text-input" 
+          placeholder="請輸入 CSV 資料集網址 (例如: https://raw.githubusercontent.com/...)"
+          value="https://raw.githubusercontent.com/Avik-Jain/100-Days-Of-ML-Code/master/datasets/50_Startups.csv"
+        >
+        <button id="btnLoadUrl" class="btn btn-sm btn-cyan">
+          <i data-lucide="download-cloud" class="icon-xs"></i> 載入 URL
+        </button>
+      </div>
+    </div>
+
+    <div class="toolbar-section file-upload-group">
+      <label class="input-label"><i data-lucide="upload" class="mini-icon"></i> 本地上傳 CSV:</label>
+      <label for="fileUploadInput" class="btn btn-sm btn-outline file-upload-label">
+        <i data-lucide="file-up" class="icon-xs"></i> 選擇檔案
+        <input type="file" id="fileUploadInput" accept=".csv" style="display: none;">
+      </label>
+    </div>
+
+    <div class="toolbar-section quick-presets">
+      <span class="preset-label">快速切換:</span>
+      <button id="btnPresetStartups" class="btn-preset active">50 Startups</button>
+      <button id="btnPresetBoston" class="btn-preset">Boston Housing</button>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    
+    <!-- Feature Selection & Preliminary Analysis Banner -->
+    <section class="card config-card" id="configSection">
+      <div class="card-header">
+        <div class="card-title-group">
+          <i data-lucide="sliders-horizontal" class="section-icon"></i>
+          <div>
+            <h2>Feature Selection & Preliminary Analysis</h2>
+            <p class="section-desc" id="datasetDescText">50 Startup Multiple Linear Regression Explorer / 即時特徵篩選與訓練設定</p>
+          </div>
+        </div>
+        <div class="dataset-meta-tags" id="datasetMetaBadges">
+          <span class="meta-tag" id="badgeSampleCount"><i data-lucide="database" class="icon-xs"></i> 50 筆樣本</span>
+          <span class="meta-tag" id="badgeFeatureCount"><i data-lucide="columns" class="icon-xs"></i> 4 個預測變數</span>
+          <span class="meta-tag badge-target" id="badgeTargetCol"><i data-lucide="target" class="icon-xs"></i> 目標變數: Profit</span>
+        </div>
+      </div>
+
+      <div class="config-grid">
+        <!-- Target & Split Controls -->
+        <div class="config-controls">
+          <div class="control-item">
+            <label for="targetColSelect" class="control-label">目標變數 (Target Y):</label>
+            <select id="targetColSelect" class="select-input"></select>
+          </div>
+
+          <div class="control-item">
+            <div class="label-row">
+              <label for="trainSplitSlider" class="control-label">訓練/測試集切分 (Train/Test Split):</label>
+              <span id="trainSplitLabel" class="slider-val">80% Train / 20% Test</span>
+            </div>
+            <input type="range" id="trainSplitSlider" min="50" max="95" step="5" value="80" class="range-slider">
+          </div>
+
+          <div class="control-item btn-row">
+            <button id="btnReshuffle" class="btn btn-sm btn-outline" title="重新洗牌切分訓練集與測試集">
+              <i data-lucide="shuffle" class="icon-xs"></i> 重新隨機切分
+            </button>
+            <button id="btnSelectAllFeatures" class="btn btn-sm btn-ghost">全選特徵</button>
+            <button id="btnResetFeatures" class="btn btn-sm btn-ghost">重置特徵</button>
+          </div>
+        </div>
+
+        <!-- Feature Toggle Chips -->
+        <div class="feature-selection-box">
+          <label class="control-label">選取納入多元迴歸之特徵 (點擊即時重新擬合模型):</label>
+          <div id="featureChipsContainer" class="feature-chips-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Performance Metrics Row (KPI Cards) -->
+    <section class="metrics-grid">
+      <div class="metric-card card-glow-emerald">
+        <div class="metric-header">
+          <span class="metric-title">R² 判定係數 (R-Squared)</span>
+          <i data-lucide="check-circle-2" class="metric-icon text-emerald"></i>
+        </div>
+        <div class="metric-value-row">
+          <span id="metricR2" class="metric-val text-emerald">0.9508</span>
+        </div>
+        <div class="metric-footer">
+          <span id="metricR2Desc" class="metric-badge badge-emerald">解釋能力極佳</span>
+          <span class="metric-sub">測試集: <strong id="metricTestR2">0.9324</strong></span>
+        </div>
+      </div>
+
+      <div class="metric-card card-glow-indigo">
+        <div class="metric-header">
+          <span class="metric-title">調整後 R² (Adjusted R²)</span>
+          <i data-lucide="trending-up" class="metric-icon text-indigo"></i>
+        </div>
+        <div class="metric-value-row">
+          <span id="metricAdjR2" class="metric-val text-indigo">0.9452</span>
+        </div>
+        <div class="metric-footer">
+          <span class="metric-desc">懲罰多餘特徵項</span>
+          <span class="metric-sub">自由度 df: <strong id="metricDf">44</strong></span>
+        </div>
+      </div>
+
+      <div class="metric-card card-glow-cyan">
+        <div class="metric-header">
+          <span class="metric-title">均方根誤差 (RMSE)</span>
+          <i data-lucide="activity" class="metric-icon text-cyan"></i>
+        </div>
+        <div class="metric-value-row">
+          <span id="metricRMSE" class="metric-val text-cyan">$8,854.76</span>
+        </div>
+        <div class="metric-footer">
+          <span class="metric-desc">預測值標準偏差</span>
+          <span class="metric-sub">測試集: <strong id="metricTestRMSE">$9,120.40</strong></span>
+        </div>
+      </div>
+
+      <div class="metric-card card-glow-amber">
+        <div class="metric-header">
+          <span class="metric-title">平均絕對誤差 (MAE)</span>
+          <i data-lucide="bar-chart-2" class="metric-icon text-amber"></i>
+        </div>
+        <div class="metric-value-row">
+          <span id="metricMAE" class="metric-val text-amber">$6,471.45</span>
+        </div>
+        <div class="metric-footer">
+          <span class="metric-desc">平均絕對偏離度</span>
+          <span class="metric-sub">目標平均: <strong id="metricMeanY">$112,012</strong></span>
+        </div>
+      </div>
+
+      <div class="metric-card card-glow-purple">
+        <div class="metric-header">
+          <span class="metric-title">整體檢定 (F-Statistic)</span>
+          <i data-lucide="sparkles" class="metric-icon text-purple"></i>
+        </div>
+        <div class="metric-value-row">
+          <span id="metricFStat" class="metric-val text-purple">173.58</span>
+        </div>
+        <div class="metric-footer">
+          <span id="metricPValBadge" class="metric-badge badge-purple">p &lt; 0.0001 (***)</span>
+          <span class="metric-sub">總體迴歸顯著</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fitted Equation Highlight Banner -->
+    <section class="card equation-card">
+      <div class="equation-header">
+        <div class="eq-title">
+          <i data-lucide="binary" class="icon-sm text-cyan"></i>
+          <span>擬合多元線性迴歸方程式 (Fitted Model Equation)</span>
+        </div>
+        <button id="btnCopyEquation" class="btn btn-xs btn-outline">
+          <i data-lucide="copy" class="icon-xs"></i> 複製方程式
+        </button>
+      </div>
+      <div class="equation-body">
+        <div id="equationDisplay" class="equation-text">
+          <!-- Dynamically generated equation -->
+          載入中...
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Section: Exact Charts from Homework Screenshot -->
+    <section class="card charts-section">
+      <div class="charts-section-header">
+        <div class="card-title-group">
+          <i data-lucide="line-chart" class="section-icon"></i>
+          <div>
+            <h2>Model Diagnostic & Visual Analytics</h2>
+            <p class="section-desc">視覺化模型評估：特徵數量影響、散佈圖與殘差診斷分析</p>
+          </div>
+        </div>
+        <div class="chart-tab-group">
+          <button class="chart-tab active" data-chart="stepwise">
+            <i data-lucide="git-commit" class="icon-xs"></i> 特徵數量 vs. 指標曲線 (作業指定)
+          </button>
+          <button class="chart-tab" data-chart="scatter">
+            <i data-lucide="scatter-chart" class="icon-xs"></i> 實際值 vs. 預測值散佈圖
+          </button>
+          <button class="chart-tab" data-chart="residuals">
+            <i data-lucide="bell" class="icon-xs"></i> 殘差分佈檢驗 (Normality)
+          </button>
+        </div>
+      </div>
+
+      <!-- Chart Container 1: Side-by-Side Dual Curves matching teacher screenshot -->
+      <div id="chartViewStepwise" class="chart-view active">
+        <div class="charts-dual-grid">
+          <div class="chart-box">
+            <div class="chart-header-row">
+              <span class="chart-title"><i data-lucide="trending-down" class="icon-xs text-cyan"></i> RMSE by Number of Features</span>
+              <span class="chart-badge">越低越佳</span>
+            </div>
+            <div class="canvas-wrapper">
+              <canvas id="chartRmseFeatures"></canvas>
+            </div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-header-row">
+              <span class="chart-title"><i data-lucide="trending-up" class="icon-xs text-indigo"></i> Adjusted R² by Number of Features</span>
+              <span class="chart-badge">越高越佳</span>
+            </div>
+            <div class="canvas-wrapper">
+              <canvas id="chartAdjR2Features"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Container 2: Actual vs Predicted Scatter -->
+      <div id="chartViewScatter" class="chart-view">
+        <div class="single-chart-box">
+          <div class="chart-header-row">
+            <span class="chart-title"><i data-lucide="crosshair" class="icon-xs text-emerald"></i> Actual vs. Predicted Values (對角線為理想擬合 y = x)</span>
+            <span class="chart-badge">測試集紅點 / 訓練集青點</span>
+          </div>
+          <div class="canvas-wrapper-tall">
+            <canvas id="chartActualPredicted"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Container 3: Residuals Diagnostic -->
+      <div id="chartViewResiduals" class="chart-view">
+        <div class="single-chart-box">
+          <div class="chart-header-row">
+            <span class="chart-title"><i data-lucide="bar-chart-3" class="icon-xs text-amber"></i> Residuals Distribution (殘差常態性與對稱性檢驗)</span>
+            <span class="chart-badge">零基準線居中</span>
+          </div>
+          <div class="canvas-wrapper-tall">
+            <canvas id="chartResiduals"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two Columns: Model Coefficients Table & Live Predictor -->
+    <div class="model-interaction-grid">
+      
+      <!-- Left: Model Coefficients & Statistical Tests -->
+      <section class="card table-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <i data-lucide="table" class="section-icon"></i>
+            <div>
+              <h2>Model Coefficients & Statistical Tests</h2>
+              <p class="section-desc">最小平方法 (OLS) 估計係數、標準誤、t 檢定與 p-value 顯著性</p>
+            </div>
+          </div>
+          <span class="stat-legend">顯著性: *** p&lt;0.001 | ** p&lt;0.01 | * p&lt;0.05</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="coefficientsTable">
+            <thead>
+              <tr>
+                <th>PREDICTOR (變數)</th>
+                <th>ESTIMATE (β)</th>
+                <th>STD. ERROR</th>
+                <th>T-STAT</th>
+                <th>P-VALUE</th>
+                <th>SIGNIF</th>
+                <th>95% CONF. INT</th>
+              </tr>
+            </thead>
+            <tbody id="coefficientsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Right: Live Real-Time Predictor -->
+      <section class="card predictor-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <i data-lucide="calculator" class="section-icon text-cyan"></i>
+            <div>
+              <h2>Live Real-Time Predictor</h2>
+              <p class="section-desc">滑動或輸入各項特徵值，即時推論目標預測輸出</p>
+            </div>
+          </div>
+          <button id="btnResetPredictor" class="btn btn-xs btn-outline">
+            <i data-lucide="rotate-ccw" class="icon-xs"></i> 恢復平均值
+          </button>
+        </div>
+
+        <!-- Big Display Prediction Value -->
+        <div class="prediction-display-box">
+          <span class="prediction-label" id="predictorTargetName">PREDICTED STARTUP PROFIT</span>
+          <div class="prediction-value" id="predictorOutputValue">$130,094.66</div>
+          <div class="prediction-sub-info" id="predictorConfidenceRange">95% 預測區間: $118,520 ~ $141,668</div>
+        </div>
+
+        <!-- Sliders & Inputs Container -->
+        <div class="predictor-controls-container" id="predictorControlsContainer">
+          <!-- Dynamically populated per active feature -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Test Set Analysis & Outliers Diagnostic Table -->
+    <section class="card diagnostic-card">
+      <div class="card-header diagnostic-header">
+        <div class="card-title-group">
+          <i data-lucide="shield-alert" class="section-icon text-amber"></i>
+          <div>
+            <h2>Test Set Analysis & Outliers Diagnostic</h2>
+            <p class="section-desc">獨立驗證測試集表現、預測誤差與殘差異常值標記 (|殘差| &gt; 2*RMSE)</p>
+          </div>
+        </div>
+        <div class="table-filters">
+          <div class="search-box">
+            <i data-lucide="search" class="icon-xs"></i>
+            <input type="text" id="testTableSearch" placeholder="搜尋測試樣本 ID 或值...">
+          </div>
+          <select id="testTableFilter" class="select-input select-sm">
+            <option value="all">所有測試樣本</option>
+            <option value="normal">正常 (Normal)</option>
+            <option value="high">偏高誤差 (&gt;1σ)</option>
+            <option value="outlier">異常值 Outlier (&gt;2σ)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table" id="testSetTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>ACTUAL (真實值)</th>
+              <th>PREDICTED (預測值)</th>
+              <th>RESIDUAL (殘差)</th>
+              <th>ERROR (%)</th>
+              <th>DIAGNOSTIC STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="testSetTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- IoT & AI ML Pipeline / Methodology Section -->
+    <section class="methodology-grid" id="methodologySection">
+      <div class="methodology-card">
+        <div class="method-header">
+          <i data-lucide="cpu" class="method-icon text-indigo"></i>
+          <h3>物聯網邊緣端推論 (Edge AI Inference)</h3>
+        </div>
+        <p>多元線性迴歸模型在 IoT 領域擁有極大優勢。其推論僅需一次矩陣向量點積 <code>ŷ = X · β</code>，記憶體佔用小於 1 KB，且在微控制器 (如 ESP32、Raspberry Pi、STM32) 上的計算延遲低於 1 毫秒，極度適合邊緣感測器設備即時預警與節能推論。</p>
+      </div>
+
+      <div class="methodology-card">
+        <div class="method-header">
+          <i data-lucide="sigma" class="method-icon text-cyan"></i>
+          <h3>最小平方法數理核心 (OLS Normal Equation)</h3>
+        </div>
+        <p>本平台內建完整線性代數運算引擎，透過正規方程式 <code>β = (XᵀX)⁻¹Xᵀy</code> 進行解析解求取，並內建高斯-約當 (Gauss-Jordan) 消去法搭配 Tikhonov 脊微正則化 (1e-7)，確保多重共線性下數值計算穩定性與精準反矩陣求解。</p>
+      </div>
+
+      <div class="methodology-card">
+        <div class="method-header">
+          <i data-lucide="badge-percent" class="method-icon text-emerald"></i>
+          <h3>作業評分與加分項完整核對表</h3>
+        </div>
+        <ul class="method-checklist">
+          <li><i data-lucide="check" class="icon-xs text-emerald"></i> <strong>兩道經典問題支援</strong>: 50 Startups 與 Boston Housing。</li>
+          <li><i data-lucide="check" class="icon-xs text-emerald"></i> <strong>加積分 +1 分</strong>: 頂端下拉式選單無縫即時切換問題。</li>
+          <li><i data-lucide="check" class="icon-xs text-emerald"></i> <strong>加積分 +2 分</strong>: 支援任意 CSV URL 輸入或本地檔案上傳。</li>
+          <li><i data-lucide="check" class="icon-xs text-emerald"></i> <strong>GitHub Pages 部署</strong>: 隨附官方 <code>pages.yml</code> 流程。</li>
+        </ul>
+      </div>
+
+      <div class="methodology-card">
+        <div class="method-header">
+          <i data-lucide="git-pull-request" class="method-icon text-purple"></i>
+          <h3>模型假設與統計診斷 (Diagnostics)</h3>
+        </div>
+        <p>完整提供決定係數 R²、調整後 R²、均方根誤差 RMSE、平均絕對誤差 MAE、整體迴歸 F 檢定，以及個別特徵項雙尾 t 檢定與 p-value。測試集殘差標記模組更能自動標示預測偏差大於 2 倍標準差之異常觀測值。</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: GitHub Pages Deployment Walkthrough -->
+  <div id="deployModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i data-lucide="rocket" class="icon-md text-cyan"></i>
+          <h3>GitHub Pages 部署與繳交步驟</h3>
+        </div>
+        <button id="btnCloseDeployModal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-lead">本專案已完全建立完畢，包含官方 GitHub Pages 自動部署工作流 <code>.github/workflows/pages.yml</code>。請依照以下步驟啟用並繳交作業：</p>
+        
+        <ol class="deploy-steps-list">
+          <li>
+            <strong>步驟 1: 推播程式碼至您的 GitHub 儲存庫</strong>
+            <p>在專案目錄下執行 Git 指令：</p>
+            <pre class="code-block">git init
+git add .
+git commit -m "feat: complete DIC-2 multiple linear regression project"
+git branch -M main
+git remote add origin https://github.com/[您的GitHub帳號]/IoT-DIC2-MultipleLR.git
+git push -u origin main</pre>
+          </li>
+          <li>
+            <strong>步驟 2: 前往 GitHub 儲存庫設定啟用 Pages</strong>
+            <p>開啟您的 GitHub 儲存庫頁面，點選 <code>Settings</code> &rarr; 左側 <code>Pages</code>。</p>
+            <div class="alert-box">
+              <strong>方式一 (推薦 · 官方 GitHub Actions)：</strong><br>
+              在 <code>Build and deployment</code> 的 <code>Source</code> 下拉選單中選擇 <strong>GitHub Actions</strong>。<br>
+              系統會自動偵測 <code>pages.yml</code>，約 30 秒內自動完成部署上線！
+            </div>
+            <div class="alert-box" style="margin-top: 8px;">
+              <strong>方式二 (傳統分支)：</strong><br>
+              在 <code>Source</code> 選擇 <strong>Deploy from a branch</strong>，Branch 選擇 <code>main</code> / <code>/ (root)</code>，點擊 Save。
+            </div>
+          </li>
+          <li>
+            <strong>步驟 3: 複製公開網址繳交作業</strong>
+            <p>您的預計公開網址格式為：</p>
+            <div class="url-badge-box">
+              <code>https://[您的GitHub帳號].github.io/IoT-DIC2-MultipleLR/</code>
+            </div>
+            <p>確認網站能正常載入後，將此網址貼回 iLearning 3.0 作業繳交區即可獲得滿分與全部加分！</p>
+          </li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button id="btnModalClose" class="btn btn-primary">我瞭解了</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>© 國立中興大學 (NCHU) 物聯網數據分析與應用 · DIC-2 作業</p>
+      <p class="footer-links">
+        <span>前端運算：純 Client-Side Vanilla JS (無伺服器負擔，免後端 API)</span>
+        <span>·</span>
+        <span>支援行動裝置與桌面端響應式檢視</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
