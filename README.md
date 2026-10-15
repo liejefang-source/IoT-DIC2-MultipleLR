@@ -1,19 +1,18 @@
-# DIC-2 Kaggle 50 Startups & Boston Housing 多元線性迴歸分析平台
+# IoT Multiple Linear Regression Studio | 智慧數據分析與即時預測平台
 
-> **國立中興大學 (NCHU) · 物聯網數據分析與應用 (IoT Data Analysis and Applications)**  
-> **作業項目**：DIC-2 kaggle 50 startup and boston housing  
-> **作業重點**：多元線性迴歸 (Multiple Linear Regression, MLR)、最小平方法 (OLS)、特徵篩選、殘差診斷與 IoT 邊緣端即時推論。
+> **Enterprise Edge AI & Predictive Analytics Platform**  
+> **核心技術**：多元線性迴歸 (Multiple Linear Regression, MLR)、最小平方法 (OLS)、動態特徵工程、殘差診斷與 IoT 邊緣端零延遲即時推論。
 
 ---
 
-## 🌟 作業要求與加分項完整實作對照 (Checklist)
+## 🌟 核心能力與系統規格 (Key Capabilities)
 
-| 評分項目 | 項目說明 | 達成狀況 | 平台實作位置 |
+| 系統能力 | 功能項目 | 規格支援 | 平台實作位置 |
 | :--- | :--- | :---: | :--- |
-| **基本要求** | 支援 50 Startups 與 Boston Housing 兩種問題分析 | 💯 **100% 達成** | 頂端選單及預設按鈕，可即時切換 |
-| **加積分 1 分** | 寫下拉式選單換兩種 problem | 🏆 **完成 (+1分)** | 頂部導航欄中央大型「選擇問題」下拉選單 |
-| **加積分 2 分** | 可任意輸入 Dataset (支援自訂 URL 與本地 CSV 上傳) | 🏆 **完成 (+2分)** | 次導航欄「自訂資料集 URL」與「本地上傳 CSV」 |
-| **GitHub Pages** | 支援自動化部署工作流程 `.github/workflows/pages.yml` | 🚀 **完成** | 隨附標準 GitHub Actions 官方自動部署檔 |
+| **雙領域預測** | 支援 50 Startups (獲利推估) 與 Boston Housing (房價估值) | 💯 **完整支援** | 頂端選單及預設按鈕，可即時切換 |
+| **動態場景切換** | 智慧下拉式選單無縫即時切換分析任務與模型重擬合 | 🏆 **完整支援** | 頂部導航欄中央大型「分析場景」下拉選單 |
+| **彈性數據匯入** | 支援任意雲端遠端 CSV URL 動態串流與本機檔案即時解析 | 🏆 **完整支援** | 次導航欄「雲端資料集 URL」與「本地上傳 CSV」 |
+| **雲端一鍵發布** | 支援 GitHub Pages 靜態託管無伺服器直接上線 | 🚀 **完整支援** | 支援 Deploy from a branch (`main` / root) |
 
 ---
 
@@ -101,22 +100,17 @@ git remote add origin https://github.com/liejefang-source/IoT-DIC2-MultipleLR.gi
 git push -u origin main
 ```
 
-### 步驟 2: 前往 GitHub 啟用 Pages
+### 步驟 2: 啟用 GitHub Pages
 1. 開啟您的 GitHub 專案頁面：`https://github.com/liejefang-source/IoT-DIC2-MultipleLR`
 2. 點擊頂部 **Settings** &rarr; 左側側邊欄 **Pages**。
-3. **方式一 (官方推薦 · 速度最快)：**
-   * 在 `Build and deployment` 的 `Source` 下拉選單中選擇 **GitHub Actions**。
-   * GitHub 將自動偵測 `.github/workflows/pages.yml`，約 30 秒內自動完成部署上線！
-4. **方式二 (傳統分支部署)：**
-   * 在 `Source` 選擇 **Deploy from a branch**。
-   * Branch 選擇 `main`，資料夾選擇 `/ (root)`，點擊 **Save**。
+3. 在 `Build and deployment` 的 `Source` 下拉選單中選擇 **Deploy from a branch**。
+4. Branch 選擇 **`main`**，資料夾選擇 **`/ (root)`**，點擊 **Save**。
 
-### 步驟 3: 複製公開網址繳交至 iLearning 3.0
-* 部署完成後，公開網址格式如下：
+### 步驟 3: 取得公開線上網址
+* 部署完成後，公開線上網址為：
   ```
   https://liejefang-source.github.io/IoT-DIC2-MultipleLR/
   ```
-* 將此網址填入作業系統中即可獲得滿分與全部加分！
 
 ---
 
@@ -124,9 +118,6 @@ git push -u origin main
 
 ```
 IoT-DIC2-MultipleLR/
-├── .github/
-│   └── workflows/
-│       └── pages.yml          # GitHub Pages 官方自動部署工作流程
 ├── data/
 │   ├── 50_Startups.csv        # 50 Startups 原始 CSV 資料集
 │   └── BostonHousing.csv      # Boston Housing 原始 CSV 資料集
@@ -134,8 +125,8 @@ IoT-DIC2-MultipleLR/
 ├── style.css                  # 深色毛玻璃現代設計系統 (Vanilla CSS)
 ├── data.js                    # 內嵌預載資料集 (支援離線直接執行)
 ├── app.js                     # 線性代數引擎、OLS 擬合、統計檢定與圖表渲染
-└── README.md                  # 專案詳細說明文件
+└── README.md                  # 專案詳細架構與說明文件
 ```
 
 ---
-© 國立中興大學 (NCHU) 物聯網數據分析與應用
+© IoT Multiple Linear Regression Studio · Edge AI & Real-Time Predictive Intelligence

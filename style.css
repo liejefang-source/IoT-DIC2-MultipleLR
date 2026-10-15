@@ -191,15 +191,6 @@ body {
   gap: 6px;
 }
 
-.badge-bonus {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 1px 6px;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-}
-
 .problem-dropdown {
   background: rgba(18, 26, 44, 0.95);
   color: #fff;
@@ -226,7 +217,7 @@ body {
   gap: 10px;
 }
 
-/* Toolbar: Custom Dataset & Presets (+2 Bonus) */
+/* Toolbar: Custom Dataset & Presets */
 .dataset-toolbar {
   background: rgba(13, 19, 33, 0.7);
   border-bottom: 1px solid var(--border-color);

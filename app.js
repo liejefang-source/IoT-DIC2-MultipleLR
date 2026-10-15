@@ -1,7 +1,6 @@
 /**
  * IoT Multiple Linear Regression Studio - Core Engine & Interactive UI
- * DIC-2: Kaggle 50 Startups & Boston Housing Explorer
- * 國立中興大學 (NCHU) 物聯網數據分析與應用
+ * Enterprise Predictive Analytics & Edge AI Machine Learning System
  */
 
 // ==========================================================================
